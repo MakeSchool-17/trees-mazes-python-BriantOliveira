@@ -58,7 +58,31 @@ class Maze:
     # Use self.state to determine which neighbors should be included
     def cell_neighbors(self, cell):
         # TODO: Logic for getting neighbors based on self.state
-        pass
+        # creates empty list of neighbors
+        x, y = self.x_y(cell)
+        neighbors = []
+        # for each direction calculate new cell from cell
+        for i in range(4):
+            new_x = x + COMPASS[i][0]
+            new_y = y + COMPASS[i][1]
+            # if new cell in that direction is within the bounds of maze
+            # if state is create and all of new cell's walls are up
+            # add (new cell index, COMPASS index of direction) to neighbors
+            if self.cell_in_bounds(new_x, new_y):
+                new_cell = self.cell_index(new_x, new_y)
+                if self.state == 'create':
+                    if not (self.maze_array[new_cell] & WALL_BITS):
+                        neighbors.append((new_cell, i))
+                    # if state is solve and no wall between cell and new cell
+                    # if new cell not on solution or backtrack path
+                    # add (new cell index, COMPASS index of direction) to neighbors
+                    elif self.state == 'solve':
+                        if (self.maze_array[cell] & WALLS[i]):
+                            if not (self.maze_array[new_cell] &
+                            (BACKTRACK_BITS | SOLUTION_BITS)):
+                            neighbors.append((new_cell, i))
+        return neighbors
+
 
     # Connect two cells by knocking down the wall between them
     # Update wall bits of from_cell and to_cell
