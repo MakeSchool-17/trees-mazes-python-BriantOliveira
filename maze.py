@@ -99,14 +99,14 @@ class Maze:
     # Update solution bits of from_cell and backtrack bits of to_cell
     def visit_cell(self, from_cell, to_cell, compass_index):
         # TODO: Logic for updating cell bits
-        self.draw_visited_cell(from_cell)
+        #self.draw_visited_cell(from_cell)
         # clear the solution bits out of from_cell,
-
-        #self.maze_array[from_cell] &= ~SOLUTION_BITS
+        self.maze_array[from_cell] &= ~SOLUTION_BITS
         #update solution bits in from_cell using WALLS[compass_index]
+        self.maze_array[from_cell] |= (WALLS[compass_index] << 8)
+        self.maze_array[to_cell] |= (OPPOSITE_WALLS[compass_index] << 12)
+        self.maze_array[to_cell] |= (from_cell)
 
-        #self.maze_array[from_cell] |= (WALLS[compass_index] << 8)
-        #self.maze_array[to_cell] |= (from_cell)
     # Backtrack from cell
     # Blank out the solution bits so it is no longer on the solution path
     def backtrack(self, cell):
