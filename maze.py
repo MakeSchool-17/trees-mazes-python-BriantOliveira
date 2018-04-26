@@ -111,7 +111,11 @@ class Maze:
     # Blank out the solution bits so it is no longer on the solution path
     def backtrack(self, cell):
         # TODO: Logic for updating cell bits
+        # Clear out the solution bits of cell
+        self.maze_array[cell] &= ~SOLUTION_BITS
         self.draw_backtracked_cell(cell)
+
+
 
     # Visit cell in BFS search
     # Update backtrack bits for use in reconstruct_solution
