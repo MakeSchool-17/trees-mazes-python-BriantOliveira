@@ -89,6 +89,11 @@ class Maze:
     def connect_cells(self, from_cell, to_cell, compass_index):
         # TODO: Logic for updating cell bits
         self.draw_connect_cells(from_cell, compass_index)
+        # connect_cells is expected to update the 4-bits storing knocked down
+        # walls for the from_cell and the to_cell.
+        self.maze_array[from_cell] |= WALLS[compass_index]
+        self.maze_array[to_cell] |= OPPOSITE_WALLS[compass_index]
+        self.draw_connect_cells(from_cell, compass_index)
 
     # Visit a cell along a possible solution path
     # Update solution bits of from_cell and backtrack bits of to_cell
