@@ -80,7 +80,7 @@ class Maze:
                         if (self.maze_array[cell] & WALLS[i]):
                             if not (self.maze_array[new_cell] &
                             (BACKTRACK_BITS | SOLUTION_BITS)):
-                            neighbors.append((new_cell, i))
+                                neighbors.append((new_cell, i))
         return neighbors
 
 
