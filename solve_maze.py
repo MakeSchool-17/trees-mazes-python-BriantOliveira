@@ -1,27 +1,31 @@
 import maze
 import generate_maze
 import sys
+import random
 
 
 # Solve maze using Pre-Order DFS algorithm, terminate with solution
 def solve_dfs(m):
     # TODO: Implement solve_dfs
     stack = []
-    current_cell = 0
+    cell = 0
     visited_cells = 0
 
-    while current_cell < m.total_cells -1:
-        unvisited_neighbors = m.cell_neighbors(current_cell)
+    while cell < m.total_cells -1:
+        neighbors = m.cell_neighbors(cell)
+        print(neighbors)
         if len(neighbors) > 0:
-            neighbors_index = m.random.randint(0, len(neighbors) - 1)
+            neighbors_index = random.randint(0, len(neighbors) - 1)
             new_cell = neighbors[neighbors_index][0]
-            visit = visit_cells(new_cell)
-            stack.append(current_cell)
-            current_cell = new_cell
+            compass_index = neighbors[neighbors_index][1]
+            m.visit_cell(cell, new_cell, compass_index)
+            stack.append(cell)
+            cell = new_cell
             visited_cells += 1
+
         else:
-            backtrack_cell = backtrack(current_cell)
-            current_cell = stack.pop()
+            backtrack_cell = m.backtrack(cell)
+            cell = stack.pop()
         m.refresh_maze_view()
     m.state = 'idle'
 
@@ -31,21 +35,21 @@ def solve_dfs(m):
 def solve_bfs(m):
     # TODO: Implement solve_bfs
     queue = Queue()
-    current_cell = 0
+    cell = 0
     in_direction = 0b0000
     visited_cells = 0
-    queue.enqueue(current_cell, in_direction)
-
-    while (current_cell != m.total_cells - 1) and not (queue.isEmpty()):
-        current_cell, in_direction = queue.dequeue
-        visit = bfs_visit_cell(current_cell)
+    queue.enqueue(cell, in_direction)
+    print(queue)
+    while (cell != m.total_cells - 1) and not (queue.isEmpty()):
+        cell, in_direction = queue.dequeue
+        visit = bfs_visit_cell(cell)
         visited_cells += 1
         m.refresh_maze_view()
 
-        unvisited_neighbors = m.cell_neighbors(current_cell)
+        unvisited_neighbors = m.cell_neighbors(cell)
         for neighbor in neighbors:
             queue.enqueue(neighbor)
-    m.reconstruct_solution(current_cell)
+    m.reconstruct_solution(cell)
 
     m.state = 'idle'
 
